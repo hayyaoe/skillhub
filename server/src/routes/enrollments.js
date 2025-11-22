@@ -3,6 +3,25 @@ import prisma from "../prisma.js";
 
 const router = Router();
 
+// GET /api/enrollments untuk list enrollments
+router.get("/", async (req, res) => {
+  try {
+    const items = await prisma.enrollment.findMany({
+      include: {
+        participant: true,
+        course: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+    });
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to get enrollments" });
+  }
+});
+
 // POST /api/enrollments untuk daftarin peserta ke kelas
 // body: { participantId, courseId }
 router.post("/", async (req, res) => {

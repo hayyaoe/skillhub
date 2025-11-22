@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import participantsRouter from "./routes/participants.js";
 import coursesRouter from "./routes/courses.js";
 import enrollmentsRouter from "./routes/enrollments.js";
+import dashboardRouter from "./routes/dashboard.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/participants",participantsRouter);
 app.use("/api/courses",coursesRouter);
 app.use("/api/enrollments",enrollmentsRouter);
+app.use("/api/dashboard",dashboardRouter);
 
 const PORT = process.env.PORT || 4000;
 

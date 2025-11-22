@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/client";
 
 export default function ParticipantsPage() {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     id: null,
     name: "",
@@ -91,12 +93,14 @@ export default function ParticipantsPage() {
     }
   };
 
+  const goToDetail = (id) => {
+    navigate(`/participants/${id}`);
+  };
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-slate-800">
-          Participants
-        </h2>
+        <h2 className="text-xl font-semibold text-slate-800">Participants</h2>
         <p className="text-sm text-slate-500">
           Kelola data peserta SkillHub (tambah, edit, hapus).
         </p>
@@ -135,9 +139,7 @@ export default function ParticipantsPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-medium text-slate-700">
-              Phone
-            </label>
+            <label className="text-sm font-medium text-slate-700">Phone</label>
             <input
               name="phone"
               value={form.phone}
@@ -222,6 +224,12 @@ export default function ParticipantsPage() {
                     </td>
                     <td className="px-3 py-2 border-b border-slate-100">
                       <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => goToDetail(p.id)}
+                          className="px-2 py-1 text-xs rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100"
+                        >
+                          Details
+                        </button>
                         <button
                           onClick={() => handleEdit(p)}
                           className="px-2 py-1 text-xs rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100"

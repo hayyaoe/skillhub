@@ -4,10 +4,9 @@ export default function Layout({ children }) {
   const location = useLocation();
 
   const linkClass = (path) =>
-    `px-3 py-1 rounded-md text-sm font-medium ${
-      location.pathname.startsWith(path)
-        ? "bg-slate-800 text-white"
-        : "text-slate-100 hover:bg-slate-700 hover:text-white"
+    `px-3 py-1 rounded-md text-sm font-medium ${location.pathname.startsWith(path)
+      ? "bg-slate-800 text-white"
+      : "text-slate-100 hover:bg-slate-700 hover:text-white"
     }`;
 
   return (
@@ -15,10 +14,13 @@ export default function Layout({ children }) {
       <header className="bg-slate-900 text-slate-50 shadow">
         <div className="max-w-5xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold tracking-tight">
-              SkillHub Dashboard
-            </h1>
+              <h1 className="text-lg font-semibold tracking-tight">
+                SkillHub
+              </h1>
             <nav className="flex gap-2">
+              <Link to="/dashboard" className={linkClass("/dashboard")}>
+                Dashboard
+              </Link>
               <Link to="/participants" className={linkClass("/participants")}>
                 Participants
               </Link>
