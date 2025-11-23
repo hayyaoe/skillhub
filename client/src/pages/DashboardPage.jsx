@@ -12,7 +12,7 @@ export default function DashboardPage() {
       setData(res.data);
     } catch (err) {
       console.error(err);
-      alert("Gagal memuat dashboard summary");
+      alert("Failed to load dashboard summary.");
     } finally {
       setLoading(false);
     }
@@ -27,7 +27,11 @@ export default function DashboardPage() {
   }
 
   if (!data) {
-    return <p className="text-sm text-red-500">Gagal memuat dashboard.</p>;
+    return (
+      <p className="text-sm text-red-500">
+        Failed to load dashboard information.
+      </p>
+    );
   }
 
   const { totals, recentParticipants, recentCourses } = data;
@@ -38,38 +42,39 @@ export default function DashboardPage() {
       <div>
         <h2 className="text-xl font-semibold text-slate-800">Dashboard</h2>
         <p className="text-sm text-slate-500">
-          Ringkasan cepat aktivitas SkillHub (peserta, kursus, dan enrollment).
+          A quick overview of SkillHub activity: participants, courses, and enrollments.
         </p>
       </div>
 
-      {/* Cards */}
+      {/* Stat Cards */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           label="Total Participants"
           value={totals.participants}
-          subtitle="Peserta terdaftar"
+          subtitle="Registered participants"
         />
         <StatCard
           label="Total Courses"
           value={totals.courses}
-          subtitle="Kelas tersedia"
+          subtitle="Available courses"
         />
         <StatCard
           label="Total Enrollments"
           value={totals.enrollments}
-          subtitle="Pendaftaran aktif"
+          subtitle="Active enrollments"
         />
       </section>
 
-      {/* Recent data */}
+      {/* Recent Data */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Recent participants */}
+        {/* Recent Participants */}
         <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4">
           <h3 className="text-base font-semibold text-slate-800 mb-2">
-            Peserta Terbaru
+            Recent Participants
           </h3>
+
           {recentParticipants.length === 0 ? (
-            <p className="text-sm text-slate-500">Belum ada peserta.</p>
+            <p className="text-sm text-slate-500">No participants yet.</p>
           ) : (
             <ul className="space-y-2 text-sm">
               {recentParticipants.map((p) => (
@@ -90,13 +95,14 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Recent courses */}
+        {/* Recent Courses */}
         <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4">
           <h3 className="text-base font-semibold text-slate-800 mb-2">
-            Course Terbaru
+            Recent Courses
           </h3>
+
           {recentCourses.length === 0 ? (
-            <p className="text-sm text-slate-500">Belum ada course.</p>
+            <p className="text-sm text-slate-500">No courses available.</p>
           ) : (
             <ul className="space-y-2 text-sm">
               {recentCourses.map((c) => (

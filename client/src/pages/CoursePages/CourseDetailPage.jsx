@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../api/client";
+import api from "../../api/client";
 
 export default function CourseDetailPage() {
   const { id } = useParams();
@@ -19,9 +19,9 @@ export default function CourseDetailPage() {
     } catch (err) {
       console.error(err);
       if (err.response?.status === 404) {
-        setError("Course tidak ditemukan.");
+        setError("Course not found.");
       } else {
-        setError("Gagal memuat detail course.");
+        setError("Failed to load course details.");
       }
     } finally {
       setLoading(false);
@@ -43,9 +43,9 @@ export default function CourseDetailPage() {
           onClick={goBack}
           className="text-xs mb-2 text-slate-600 hover:text-slate-900"
         >
-          ← Back to Courses
+          ← Back to List
         </button>
-        <p className="text-sm text-slate-500">Loading course detail...</p>
+        <p className="text-sm text-slate-500">Loading course details...</p>
       </div>
     );
   }
@@ -57,32 +57,55 @@ export default function CourseDetailPage() {
           onClick={goBack}
           className="text-xs mb-2 text-slate-600 hover:text-slate-900"
         >
-          ← Back to Courses
+          ← Back to List
         </button>
-        <p className="text-sm text-red-500">{error || "Course tidak ditemukan."}</p>
+        <p className="text-sm text-red-500">{error || "Course not found."}</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <button
-        onClick={goBack}
-        className="text-xs text-slate-600 hover:text-slate-900"
-      >
-        ← Back to Courses
-      </button>
+      {/* Header + Back + Edit */}
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-semibold text-slate-800">
+            Course Details
+          </h2>
+          <p className="text-sm text-slate-500">
+            Complete information about the course and enrolled participants.
+          </p>
+        </div>
 
-      {/* Info utama course */}
-      <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 space-y-3">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex items-center gap-1 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
+          >
+            <span className="text-sm">←</span>
+            <span>Back to List</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate(`/courses/${id}/edit`)}
+            className="inline-flex items-center rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800 transition"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+
+      {/* Main course info card */}
+      <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 space-y-3 max-w-2xl">
         <div>
           <p className="text-xs text-slate-500">Course ID #{course.id}</p>
-          <h2 className="text-xl font-semibold text-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900">
             {course.name}
-          </h2>
+          </h3>
           <p className="text-sm text-slate-600">
-            Instructor:{" "}
-            <span className="font-medium">{course.instructor}</span>
+            Instructor: <span className="font-medium">{course.instructor}</span>
           </p>
         </div>
 
@@ -91,15 +114,15 @@ export default function CourseDetailPage() {
         )}
       </section>
 
-      {/* Peserta terdaftar */}
-      <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-5">
-        <h3 className="text-base font-semibold text-slate-800 mb-3">
-          Peserta Terdaftar
+      {/* Enrolled participants */}
+      <section className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 max-w-2xl space-y-3">
+        <h3 className="text-base font-semibold text-slate-800">
+          Enrolled Participants
         </h3>
 
-        {course.enrollments.length === 0 ? (
+        {!course.enrollments || course.enrollments.length === 0 ? (
           <p className="text-sm text-slate-500">
-            Belum ada peserta yang terdaftar di course ini.
+            No participants enrolled in this course.
           </p>
         ) : (
           <ul className="space-y-2 text-sm">

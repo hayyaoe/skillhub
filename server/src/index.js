@@ -20,13 +20,17 @@ app.get("/api/health", (req, res) => {
 });
 
 // routes untuk manipulasi datanya
-app.use("/api/participants",participantsRouter);
-app.use("/api/courses",coursesRouter);
-app.use("/api/enrollments",enrollmentsRouter);
-app.use("/api/dashboard",dashboardRouter);
+app.use("/api/participants", participantsRouter);
+app.use("/api/courses", coursesRouter);
+app.use("/api/enrollments", enrollmentsRouter);
+app.use("/api/dashboard", dashboardRouter);
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
